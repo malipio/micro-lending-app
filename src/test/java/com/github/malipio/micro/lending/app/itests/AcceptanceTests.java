@@ -23,7 +23,7 @@ import com.github.malipio.micro.lending.app.MicroLendingApplication;
 @DirtiesContext
 public class AcceptanceTests {
 
-	@Value("${local.server.port}")
+	@Value("${server.port}")
 	private int port;
 	
 	@Value("${server.contextPath}")

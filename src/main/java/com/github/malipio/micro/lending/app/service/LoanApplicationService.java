@@ -27,7 +27,7 @@ public class LoanApplicationService {
 	
 	@Transactional
 	// TODO rest context (client ip)
-	public Object issueLoan(LoanApplication loanApplication) {
+	public LoanApplication issueLoan(LoanApplication loanApplication) {
 		
 		loanApplication.setSourceIp("TODO:127.0.0.1");
 		loanApplication.setCreationDate(LocalDateTime.now());
@@ -36,14 +36,25 @@ public class LoanApplicationService {
 			loanApplication.setStatus(LoanApplication.Status.APPROVED);
 			loanApplication.getLoan().setInterest(baseInterest);
 			loanApplication.getLoan().setExtended(false);
-			loanApplicationRepository.save(loanApplication);
-			return "approved";
+			
 		} else {
 			loanApplication.setStatus(LoanApplication.Status.REJECTED);
 			loanApplication.setLoan(null);
-			loanApplicationRepository.save(loanApplication);
-			return "rejected";
 		}
+		
+		return loanApplicationRepository.save(loanApplication);
+	}
+
+	public LoanApplicationService(double baseInterest,
+			RiskAnalyzer riskAnalyzer,
+			LoanApplicationRepository loanApplicationRepository) {
+		super();
+		this.baseInterest = baseInterest;
+		this.riskAnalyzer = riskAnalyzer;
+		this.loanApplicationRepository = loanApplicationRepository;
+	}
+
+	public LoanApplicationService() {
 	}
 	
 }

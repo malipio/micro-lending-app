@@ -8,37 +8,39 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+
+import net.karneim.pojobuilder.GeneratePojoBuilder;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@GeneratePojoBuilder
 public class Loan {
 	
 	@Id
 	@GeneratedValue
 	private long id;
 	
-	@NotEmpty
-	@Column(nullable=false)
+	@NotNull
+	@Column(nullable=false,name="fromTs")
 	private LocalDateTime from;
 	
-	@NotEmpty
-	@Column(nullable=false)
+	@NotNull
+	@Column(nullable=false,name="toTs")
 	private LocalDateTime to;
 	
-	@NotEmpty
 	@Column(nullable=false)
 	private boolean extended;
 	
-	@NotEmpty
+	@NotNull
 	@Column(nullable=false)
 	private BigDecimal amount;
 	
-	@NotEmpty
 	@Column(nullable=false)
 	private double interest;
 	
-	@OneToOne(mappedBy="loan")
+	@OneToOne(mappedBy="loan",optional=true)
 	private LoanApplication loanApplication;
 
 	public long getId() {

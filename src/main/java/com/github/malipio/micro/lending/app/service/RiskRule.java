@@ -4,5 +4,9 @@ import com.github.malipio.micro.lending.app.domain.LoanApplication;
 
 public interface RiskRule {
 
-	public boolean apply(LoanApplication loanApplication); 
+	/**
+	 * @param loanApplication
+	 * @return true if application is to be accepted
+	 */
+	public boolean validate(LoanApplication loanApplication); 
 }

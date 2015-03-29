@@ -1,5 +1,7 @@
 package com.github.malipio.micro.lending.app.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,9 +18,10 @@ public class MaxAttemptsFromIpPerDayRiskRule implements RiskRule {
 	private LoanApplicationRepository LoanApplicationRepository;
 	
 	@Override
-	public boolean apply(LoanApplication loanApplication) {
-		return LoanApplicationRepository.countForClientPerDay(
-				loanApplication.getClient(), loanApplication.getCreationDate().toLocalDate()) <= maxAttempts;
+	public boolean validate(LoanApplication loanApplication) {
+		LocalDate forDate = loanApplication.getCreationDate().toLocalDate();
+		return LoanApplicationRepository.countBySourceIpAndCreationDate(loanApplication.getSourceIp(), 
+				forDate.getYear(), forDate.getMonthValue(), forDate.getDayOfMonth()) <= maxAttempts;
 	}
 	
 	

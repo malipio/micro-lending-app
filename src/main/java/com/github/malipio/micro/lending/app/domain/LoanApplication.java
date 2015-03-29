@@ -2,6 +2,7 @@ package com.github.malipio.micro.lending.app.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,10 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+
+import net.karneim.pojobuilder.GeneratePojoBuilder;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@GeneratePojoBuilder
 public class LoanApplication {
 	
 	@Id
@@ -24,7 +29,7 @@ public class LoanApplication {
 		REJECTED, APPROVED;
 	}
 	
-	@NotEmpty
+	@NotNull
 	@Column(nullable=false)
 	private Status status;
 	
@@ -32,11 +37,11 @@ public class LoanApplication {
 	@Column(nullable=false)
 	private String sourceIp;
 	
-	@NotEmpty
+	@NotNull
 	@Column(nullable=false)
 	private LocalDateTime creationDate;
 	
-	@OneToOne(optional = true, fetch = FetchType.EAGER)
+	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private Loan loan;
 	
 	@ManyToOne

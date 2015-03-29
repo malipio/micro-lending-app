@@ -10,16 +10,16 @@ import com.github.malipio.micro.lending.app.domain.LoanApplication;
 @Component
 public class TimeWindowGapRiskRule implements RiskRule {
 
-	@Value("${app.risk.deny.time.from}")
+	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.from}')}")
 	private LocalTime denyFrom;
 	
-	@Value("${app.risk.deny.time.to}")
+	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.to}')}")
 	private LocalTime denyTo;
 
 	// TODO verify that denyFrom < denyTo
 	
 	@Override
-	public boolean apply(LoanApplication loanApplication) {
+	public boolean validate(LoanApplication loanApplication) {
 		return loanApplication.getCreationDate().toLocalTime().isBefore(denyFrom) &&
 				loanApplication.getCreationDate().toLocalTime().isAfter(denyTo);
 	}

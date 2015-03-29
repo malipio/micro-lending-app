@@ -1,13 +1,16 @@
 package com.github.malipio.micro.lending.app.service;
 
-import java.time.LocalDate;
-
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-import com.github.malipio.micro.lending.app.domain.Client;
 import com.github.malipio.micro.lending.app.domain.LoanApplication;
 
 public interface LoanApplicationRepository extends CrudRepository<LoanApplication, Long> {
 
-	public long countForClientPerDay(Client client, LocalDate day);
+	@Query("select count(la) from LoanApplication la where "
+			+ "la.sourceIp = :sourceIp and YEAR(la.creationDate) = :year and"
+			+ " MONTH(la.creationDate) = :month and DAY(la.creationDate) = :day")
+	public long countBySourceIpAndCreationDate(@Param("sourceIp") String sourceIp, 
+			@Param("year") int year, @Param("month") int month, @Param("day") int day);
 }

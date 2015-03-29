@@ -16,7 +16,7 @@ public class LoanExtensionService {
 
 	private static final Logger log = LoggerFactory.getLogger(LoanExtensionService.class);
 	
-	@Value("${app.extension.period}")
+	@Value("#{T(java.time.Period).parse('${app.extension.period}')}")
 	private Period extensionPeriod;
 	
 	@Value("${app.extension.interest.factor}")
@@ -28,9 +28,8 @@ public class LoanExtensionService {
 	@Transactional
 	// PUT - modyfikacja loan
 	public void extendLoan(Loan loan) {
-		
 		Loan currentLoan = loanRepository.findOne(loan.getId());
-		if(currentLoan.isExtended())
+		if(currentLoan == null || currentLoan.isExtended())
 			return; // TODO idempotent?
 		currentLoan.setExtended(true);
 		currentLoan.setInterest(currentLoan.getInterest()*this.extensionInterestFactor);
