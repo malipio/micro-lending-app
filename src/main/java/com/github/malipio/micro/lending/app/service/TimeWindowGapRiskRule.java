@@ -2,6 +2,8 @@ package com.github.malipio.micro.lending.app.service;
 
 import java.time.LocalTime;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +18,26 @@ public class TimeWindowGapRiskRule implements RiskRule {
 	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.to}')}")
 	private LocalTime denyTo;
 
-	// TODO verify that denyFrom < denyTo
+	@PostConstruct
+	public void verifyParameters() throws IllegalArgumentException {
+		
+		if (denyTo.isBefore(denyFrom))
+			throw new IllegalArgumentException("denyFrom <= denyTo");
+	}
 	
 	@Override
 	public boolean validate(LoanApplication loanApplication) {
-		return loanApplication.getCreationDate().toLocalTime().isBefore(denyFrom) &&
+		return loanApplication.getCreationDate().toLocalTime().isBefore(denyFrom) ||
 				loanApplication.getCreationDate().toLocalTime().isAfter(denyTo);
 	}
-	
+
+	public TimeWindowGapRiskRule(LocalTime denyFrom, LocalTime denyTo) {
+		this.denyFrom = denyFrom;
+		this.denyTo = denyTo;
+		verifyParameters();
+	}
+
+	public TimeWindowGapRiskRule() {
+	}
 	
 }

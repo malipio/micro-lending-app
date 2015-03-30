@@ -22,7 +22,12 @@ public class RiskAnalyzer {
 	private List<RiskRule> rules;
 	
 	public boolean checkLoanApplicationApproval(LoanApplication loanApplication) {
-		return rules.stream().allMatch(r -> r.validate(loanApplication));
+		return rules.stream().allMatch(r -> {
+		
+			boolean result = r.validate(loanApplication);
+			log.info("risk check for {} is {}", r.getClass().getName(), result);
+			return result;
+		});
 	}
 
 }
