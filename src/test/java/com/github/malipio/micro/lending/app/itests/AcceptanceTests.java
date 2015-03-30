@@ -18,8 +18,8 @@ import com.github.malipio.micro.lending.app.MicroLendingApplication;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MicroLendingApplication.class)
-//@WebAppConfiguration
-@IntegrationTest("server.port:0")
+@WebAppConfiguration
+@IntegrationTest
 @DirtiesContext
 public class AcceptanceTests {
 
@@ -32,7 +32,7 @@ public class AcceptanceTests {
 	@Test
 	public void shouldOpenStartPage() throws Exception {
 		ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
-				"http://localhost:" + this.port+"contextPath", String.class);
+				"http://localhost:" + this.port+"/"+contextPath, String.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 	}
 	

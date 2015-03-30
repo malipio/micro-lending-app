@@ -44,7 +44,8 @@ public class LoanApplication {
 	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private Loan loan;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
+	@NotNull
 	private Client client;
 
 	public long getId() {

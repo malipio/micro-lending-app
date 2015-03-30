@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import com.github.malipio.micro.lending.app.domain.ClientBuilder;
 import com.github.malipio.micro.lending.app.domain.LoanApplication;
 import com.github.malipio.micro.lending.app.domain.LoanBuilder;
 import com.github.malipio.micro.lending.app.domain.LoanApplication.Status;
@@ -31,6 +32,9 @@ public class LoanApplicationServiceTests {
 				a -> a.getArgumentAt(0, LoanApplication.class));
 		LoanApplication app = service.issueLoan(new LoanApplicationBuilder()
 			.withLoan(new LoanBuilder().build())
+			.withClient(new ClientBuilder()
+				.withPesel("1122")
+				.build())
 			.build());
 		
 		// then
@@ -55,6 +59,9 @@ public class LoanApplicationServiceTests {
 		when(loanApplicationRepo.save(any(LoanApplication.class))).thenAnswer( 
 				a -> a.getArgumentAt(0, LoanApplication.class));
 		LoanApplication app = service.issueLoan(new LoanApplicationBuilder()
+			.withClient(new ClientBuilder()
+				.withPesel("1122")
+				.build())
 			.withLoan(new LoanBuilder().build())
 			.build());
 		
