@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.malipio.micro.lending.app.domain.Client;
 import com.github.malipio.micro.lending.app.domain.LoanApplication;
 import com.github.malipio.micro.lending.app.domain.LoanApplication.Status;
+import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
 
 @RestController
 @RequestMapping("/clients/{pesel}/loans/applications")
@@ -37,7 +39,6 @@ public class LoanApplicationController {
 	private static String extractSourceIp(HttpServletRequest httpRequest) {
 		return httpRequest.getRemoteAddr();
 	}
-	
 	
 	private boolean validateClientInRequest(String pesel, LoanApplication loanApplication) {
 		
@@ -64,8 +65,7 @@ public class LoanApplicationController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> create(HttpServletRequest httpRequest, @PathVariable("pesel") String pesel, @RequestBody LoanApplication loanApplication) {
-		
+	public ResponseEntity<?> create(HttpServletRequest httpRequest, @PathVariable("pesel") String pesel, @RequestBody @Validated(RequestScope.class) LoanApplication loanApplication) {
 		if(!validateClientInRequest(pesel, loanApplication)) {
 			log.info("client pesel inconsistency between request URI and body");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

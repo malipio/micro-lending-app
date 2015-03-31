@@ -71,8 +71,4 @@ public class LoanApplicationServiceTests {
 		assertThat(app.getLoan(), nullValue());
 	}
 	
-//	@Test
-	public void shouldNotIssueLoanDueToValidation() {
-		// TODO
-	}
 }

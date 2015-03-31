@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,10 @@ public class ClientController {
 	private LoanRepository loanRepo;
 	
 	@RequestMapping(value="/{pesel}/loans", method=RequestMethod.GET)
-	public ResponseEntity<List<Loan>> getHistoryOfLoans(String pesel) {
+	public ResponseEntity<List<Loan>> getHistoryOfLoans(@PathVariable("pesel") String pesel) {
+		
+		if(pesel == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 		if(!clientRepo.exists(pesel))
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

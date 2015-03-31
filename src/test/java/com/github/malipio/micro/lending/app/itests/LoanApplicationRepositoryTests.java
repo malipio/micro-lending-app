@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class LoanApplicationRepositoryTests {
 	
 	private Client dummyClient() {
 		return clientRepo.save(new ClientBuilder()
-			.withPesel("1")
+			.withPesel("12345678901")
 			.withFirstName("John")
 			.withLastName("Doe")
 			.withRegistrationDate(LocalDateTime.now())
@@ -98,5 +100,16 @@ public class LoanApplicationRepositoryTests {
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth()), is(0L));
 		assertThat(repo.countBySourceIpAndCreationDate("127.0.0.2", 
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth()), is(50L));
+	}
+	
+	@Test(expected=ConstraintViolationException.class)
+	public void shouldNotSaveLoanDueToValidation() {
+		repo.save(new LoanApplicationBuilder()
+		.withStatus(Status.APPROVED)
+		.withCreationDate(LocalDateTime.now())
+		.withSourceIp("127.0.0.2")
+		.withClient(dummyClient())
+		.withLoan(new LoanBuilder().build())
+		.build());
 	}
 }

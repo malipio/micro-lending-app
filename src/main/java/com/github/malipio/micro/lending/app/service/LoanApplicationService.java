@@ -30,22 +30,25 @@ public class LoanApplicationService {
 	public LoanApplication issueLoan(LoanApplication loanApplication) {
 		Objects.requireNonNull(loanApplication);
 		Objects.requireNonNull(loanApplication.getClient());
+		
 		loanApplication.setCreationDate(LocalDateTime.now());
 		
 		if (riskAnalyzer.checkLoanApplicationApproval(loanApplication)) {
 			loanApplication.setStatus(LoanApplication.Status.APPROVED);
 			loanApplication.getLoan().setInterest(baseInterest);
 			loanApplication.getLoan().setExtended(false);
-			log.info("loan application has been APPROVED for client pesel={}, loanId={}",
-					loanApplication.getClient().getPesel(), loanApplication.getLoan().getId());
+			
 		} else {
 			loanApplication.setStatus(LoanApplication.Status.REJECTED);
 			loanApplication.setLoan(null);
-			log.info("loan application has been REJECTED for client pesel={}",
-					loanApplication.getClient().getPesel());
 		}
 		
-		return loanApplicationRepository.save(loanApplication);
+		LoanApplication result = loanApplicationRepository.save(loanApplication);
+		log.info("loan application has been {} for client pesel={}, sourceIp={}, loanId={}",
+				result.getStatus(),
+				result.getClient().getPesel(), result.getSourceIp(), 
+				result.getLoan() == null ? null : result.getLoan().getId());
+		return result;
 	}
 
 	public LoanApplicationService(double baseInterest,

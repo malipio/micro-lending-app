@@ -8,16 +8,22 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 import net.karneim.pojobuilder.GeneratePojoBuilder;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
 
 @Entity
 @GeneratePojoBuilder
 public class Client {
 	
 	@Id
+	@Size(min=11,max=11,groups={Default.class, RequestScope.class})
 	private String pesel;
 	
 	@NotEmpty
@@ -29,10 +35,12 @@ public class Client {
 	private String lastName;
 	
 	@NotNull
+	@Null(groups=RequestScope.class)
 	@Column(nullable=false)
 	private LocalDateTime registrationDate;
 	
 	@OneToMany(mappedBy="client")
+	@Null(groups=RequestScope.class)
 	private List<LoanApplication> loanApplications;
 
 	public String getPesel() {

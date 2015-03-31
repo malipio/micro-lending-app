@@ -9,13 +9,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import net.karneim.pojobuilder.GeneratePojoBuilder;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
 
 @Entity
 @GeneratePojoBuilder
@@ -30,18 +32,22 @@ public class LoanApplication {
 	}
 	
 	@NotNull
+	@Null(groups=RequestScope.class)
 	@Column(nullable=false)
 	private Status status;
 	
 	@NotEmpty
+	@Null(groups=RequestScope.class)
 	@Column(nullable=false)
 	private String sourceIp;
 	
 	@NotNull
+	@Null(groups=RequestScope.class)
 	@Column(nullable=false)
 	private LocalDateTime creationDate;
 	
 	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@NotNull(groups=RequestScope.class)
 	private Loan loan;
 	
 	@ManyToOne(optional=false)

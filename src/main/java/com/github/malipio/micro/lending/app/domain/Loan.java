@@ -10,12 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import net.karneim.pojobuilder.GeneratePojoBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.malipio.micro.lending.app.domain.validator.LoanPeriod;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import net.karneim.pojobuilder.GeneratePojoBuilder;
 
 @Entity
 @GeneratePojoBuilder
+@LoanPeriod
 public class Loan {
 	
 	@Id
@@ -41,6 +43,7 @@ public class Loan {
 	private double interest;
 	
 	@OneToOne(mappedBy="loan",optional=true)
+	@JsonIgnore
 	private LoanApplication loanApplication;
 
 	public long getId() {
