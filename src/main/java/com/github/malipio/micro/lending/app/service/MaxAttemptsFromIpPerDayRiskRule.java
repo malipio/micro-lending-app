@@ -15,23 +15,22 @@ public class MaxAttemptsFromIpPerDayRiskRule implements RiskRule {
 	private int maxAttempts;
 
 	@Autowired
-	private LoanApplicationRepository LoanApplicationRepository;
+	private LoanApplicationRepository loanApplicationRepository;
 	
 	@Override
 	public boolean validate(LoanApplication loanApplication) {
 		LocalDate forDate = loanApplication.getCreationDate().toLocalDate();
-		return LoanApplicationRepository.countBySourceIpAndCreationDate(loanApplication.getSourceIp(), 
+		return loanApplicationRepository.countBySourceIpAndCreationDate(loanApplication.getSourceIp(), 
 				forDate.getYear(), forDate.getMonthValue(), forDate.getDayOfMonth()) < maxAttempts;
-	}
-
-	public MaxAttemptsFromIpPerDayRiskRule(
-			int maxAttempts,
-			com.github.malipio.micro.lending.app.service.LoanApplicationRepository loanApplicationRepository) {
-		this.maxAttempts = maxAttempts;
-		LoanApplicationRepository = loanApplicationRepository;
 	}
 
 	public MaxAttemptsFromIpPerDayRiskRule() {
 	}
 	
+	public MaxAttemptsFromIpPerDayRiskRule(
+			int maxAttempts,
+			com.github.malipio.micro.lending.app.service.LoanApplicationRepository loanApplicationRepository) {
+		this.maxAttempts = maxAttempts;
+		this.loanApplicationRepository = loanApplicationRepository;
+	}
 }

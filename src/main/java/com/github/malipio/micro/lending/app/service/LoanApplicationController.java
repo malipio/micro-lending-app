@@ -42,17 +42,18 @@ public class LoanApplicationController {
 	private Optional<Client> findOrCreateClient(Client client) {
 		Client currentClient = clientRepo.findOne(client.getPesel());
 		
-		if(currentClient == null) {
+		if (currentClient == null) {
 			log.info("creating new client with pesel={}",client.getPesel());
 			client.setRegistrationDate(LocalDateTime.now());
 			return Optional.of(clientRepo.save(client));
-		} else
+		} else {
 			return Optional.of(currentClient);
+		}
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> create(HttpServletRequest httpRequest, @RequestBody @Validated(RequestScope.class) LoanApplication loanApplication) {
+	public ResponseEntity<Void> create(HttpServletRequest httpRequest, @RequestBody @Validated(RequestScope.class) LoanApplication loanApplication) {
 		
 		Optional<Client> clientOrEmpty = findOrCreateClient(loanApplication.getClient());
 		if(!clientOrEmpty.isPresent()) {

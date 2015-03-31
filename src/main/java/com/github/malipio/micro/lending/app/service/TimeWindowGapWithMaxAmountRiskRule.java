@@ -23,10 +23,11 @@ public class TimeWindowGapWithMaxAmountRiskRule implements RiskRule {
 	private BigDecimal loanMaxAmount;
 
 	@PostConstruct
-	public void verifyParameters() throws IllegalArgumentException {
+	public void verifyParameters() {
 		
-		if (denyTo.isBefore(denyFrom))
+		if (denyTo.isBefore(denyFrom)) {
 			throw new IllegalArgumentException("denyFrom <= denyTo");
+		}
 	}
 	
 	@Override
@@ -36,14 +37,14 @@ public class TimeWindowGapWithMaxAmountRiskRule implements RiskRule {
 				loanApplication.getCreationDate().toLocalTime().isAfter(denyTo));
 	}
 
+	public TimeWindowGapWithMaxAmountRiskRule() {
+	}
+	
 	public TimeWindowGapWithMaxAmountRiskRule(LocalTime denyFrom, LocalTime denyTo, BigDecimal loanMaxAmount) {
 		this.denyFrom = denyFrom;
 		this.denyTo = denyTo;
 		this.loanMaxAmount = loanMaxAmount;
 		verifyParameters();
-	}
-
-	public TimeWindowGapWithMaxAmountRiskRule() {
 	}
 	
 }

@@ -31,6 +31,9 @@ public class LoanExtensionService {
 		log.info("loan id={} extended successfully", currentLoan.getId());
 	}
 
+	public LoanExtensionService() {
+	}
+	
 	public LoanExtensionService(Period extensionPeriod,
 			double extensionInterestFactor) {
 		super();
@@ -38,7 +41,4 @@ public class LoanExtensionService {
 		this.extensionInterestFactor = extensionInterestFactor;
 	}
 
-	public LoanExtensionService() {
-	}
-	
 }

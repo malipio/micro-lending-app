@@ -25,11 +25,13 @@ public class LoanController {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<Loan>> getHistoryOfLoans(@RequestParam("pesel") String pesel) {
 		
-		if(pesel == null)
+		if(pesel == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
-		if(!clientRepo.exists(pesel))
+		if(!clientRepo.exists(pesel)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(loanRepo.findByLoanApplicationClientPeselOrderByToDesc(pesel), HttpStatus.OK);
 	}
 }

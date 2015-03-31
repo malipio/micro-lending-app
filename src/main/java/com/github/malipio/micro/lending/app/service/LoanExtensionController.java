@@ -25,13 +25,14 @@ public class LoanExtensionController {
 	
 	@RequestMapping(value="/extension", method=RequestMethod.PUT)
 	@Transactional
-	public ResponseEntity<?> extendLoan(@PathVariable("loanId") long loanId) {
+	public ResponseEntity<Void> extendLoan(@PathVariable("loanId") long loanId) {
 		Optional<Loan> loanOrEmpty = Optional.ofNullable(repo.findOne(loanId));
-		if(loanOrEmpty.isPresent()) { 
+		if (loanOrEmpty.isPresent()) { 
 			service.extendLoan(loanOrEmpty.get());
 			return new ResponseEntity<>(HttpStatus.OK);
-		} else
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		
 	}
 }
