@@ -1,5 +1,6 @@
 package com.github.malipio.micro.lending.app.service;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 import javax.annotation.PostConstruct;
@@ -10,13 +11,16 @@ import org.springframework.stereotype.Component;
 import com.github.malipio.micro.lending.app.domain.LoanApplication;
 
 @Component
-public class TimeWindowGapRiskRule implements RiskRule {
+public class TimeWindowGapWithMaxAmountRiskRule implements RiskRule {
 
 	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.from}')}")
 	private LocalTime denyFrom;
 	
 	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.to}')}")
 	private LocalTime denyTo;
+	
+	@Value("${app.loan.max.amount}")
+	private BigDecimal loanMaxAmount;
 
 	@PostConstruct
 	public void verifyParameters() throws IllegalArgumentException {
@@ -27,17 +31,19 @@ public class TimeWindowGapRiskRule implements RiskRule {
 	
 	@Override
 	public boolean validate(LoanApplication loanApplication) {
-		return loanApplication.getCreationDate().toLocalTime().isBefore(denyFrom) ||
-				loanApplication.getCreationDate().toLocalTime().isAfter(denyTo);
+		return loanMaxAmount.compareTo(loanApplication.getLoan().getAmount()) >= 0 && (
+				loanApplication.getCreationDate().toLocalTime().isBefore(denyFrom) ||
+				loanApplication.getCreationDate().toLocalTime().isAfter(denyTo));
 	}
 
-	public TimeWindowGapRiskRule(LocalTime denyFrom, LocalTime denyTo) {
+	public TimeWindowGapWithMaxAmountRiskRule(LocalTime denyFrom, LocalTime denyTo, BigDecimal loanMaxAmount) {
 		this.denyFrom = denyFrom;
 		this.denyTo = denyTo;
+		this.loanMaxAmount = loanMaxAmount;
 		verifyParameters();
 	}
 
-	public TimeWindowGapRiskRule() {
+	public TimeWindowGapWithMaxAmountRiskRule() {
 	}
 	
 }

@@ -9,9 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.groups.Default;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.malipio.micro.lending.app.domain.validator.LoanMaxAmount;
 import com.github.malipio.micro.lending.app.domain.validator.LoanPeriod;
+import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
 
 import net.karneim.pojobuilder.GeneratePojoBuilder;
 
@@ -24,11 +28,11 @@ public class Loan {
 	@GeneratedValue
 	private long id;
 	
-	@NotNull
+	@NotNull(groups={Default.class, RequestScope.class})
 	@Column(nullable=false,name="fromTs")
 	private LocalDateTime from;
 	
-	@NotNull
+	@NotNull(groups={Default.class, RequestScope.class})
 	@Column(nullable=false,name="toTs")
 	private LocalDateTime to;
 	
@@ -36,11 +40,14 @@ public class Loan {
 	private boolean extended;
 	
 	@NotNull
+	@LoanMaxAmount(max = 1000.0,groups={Default.class, RequestScope.class})
 	@Column(nullable=false)
 	private BigDecimal amount;
 	
 	@Column(nullable=false)
-	private double interest;
+	@NotNull
+	@Null(groups=RequestScope.class)
+	private Double interest;
 	
 	@OneToOne(mappedBy="loan",optional=true)
 	@JsonIgnore
@@ -85,12 +92,12 @@ public class Loan {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-
-	public double getInterest() {
+	
+	public Double getInterest() {
 		return interest;
 	}
 
-	public void setInterest(double interest) {
+	public void setInterest(Double interest) {
 		this.interest = interest;
 	}
 

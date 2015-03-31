@@ -10,8 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.groups.Default;
 
 import net.karneim.pojobuilder.GeneratePojoBuilder;
 
@@ -48,10 +50,12 @@ public class LoanApplication {
 	
 	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@NotNull(groups=RequestScope.class)
+	@Valid
 	private Loan loan;
 	
 	@ManyToOne(optional=false)
-	@NotNull
+	@NotNull(groups={Default.class, RequestScope.class})
+	@Valid
 	private Client client;
 
 	public long getId() {

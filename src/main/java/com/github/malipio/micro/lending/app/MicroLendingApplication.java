@@ -22,6 +22,4 @@ public class MicroLendingApplication extends SpringBootServletInitializer {
 		SpringApplication.run(MicroLendingApplication.class, args);
 	}
 	
-	
-
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,7 +27,7 @@ import com.github.malipio.micro.lending.app.domain.LoanApplication.Status;
 import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
 
 @RestController
-@RequestMapping("/clients/{pesel}/loans/applications")
+@RequestMapping("/loans/applications")
 public class LoanApplicationController {
 	private static final Logger log = LoggerFactory.getLogger(LoanApplicationController.class);
 	
@@ -40,38 +41,22 @@ public class LoanApplicationController {
 		return httpRequest.getRemoteAddr();
 	}
 	
-	private boolean validateClientInRequest(String pesel, LoanApplication loanApplication) {
-		
-		if (loanApplication.getClient() != null) {
-			return pesel.equals(loanApplication.getClient().getPesel());
-		} else
-			return true;
-	}
-	
-	private Optional<Client> findOrCreateClient(String pesel, Client client) {
-		Client currentClient = clientRepo.findOne(pesel);
+	private Optional<Client> findOrCreateClient(Client client) {
+		Client currentClient = clientRepo.findOne(client.getPesel());
 		
 		if(currentClient == null) {
-			if(client != null) {
-				log.info("creating new client with pesel={}",pesel);
-				client.setRegistrationDate(LocalDateTime.now());
-				return Optional.of(clientRepo.save(client));
-			}
-			else
-				return Optional.empty();
+			log.info("creating new client with pesel={}",client.getPesel());
+			client.setRegistrationDate(LocalDateTime.now());
+			return Optional.of(clientRepo.save(client));
 		} else
 			return Optional.of(currentClient);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> create(HttpServletRequest httpRequest, @PathVariable("pesel") String pesel, @RequestBody @Validated(RequestScope.class) LoanApplication loanApplication) {
-		if(!validateClientInRequest(pesel, loanApplication)) {
-			log.info("client pesel inconsistency between request URI and body");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<?> create(HttpServletRequest httpRequest, @RequestBody @Validated(RequestScope.class) LoanApplication loanApplication) {
 		
-		Optional<Client> clientOrEmpty = findOrCreateClient(pesel, loanApplication.getClient());
+		Optional<Client> clientOrEmpty = findOrCreateClient(loanApplication.getClient());
 		if(!clientOrEmpty.isPresent()) {
 			log.info("cannot create client - insufficient data in request");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

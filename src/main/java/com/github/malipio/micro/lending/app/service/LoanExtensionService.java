@@ -30,5 +30,15 @@ public class LoanExtensionService {
 		currentLoan.setTo(currentLoan.getTo().plus(this.extensionPeriod));
 		log.info("loan id={} extended successfully", currentLoan.getId());
 	}
+
+	public LoanExtensionService(Period extensionPeriod,
+			double extensionInterestFactor) {
+		super();
+		this.extensionPeriod = extensionPeriod;
+		this.extensionInterestFactor = extensionInterestFactor;
+	}
+
+	public LoanExtensionService() {
+	}
 	
 }

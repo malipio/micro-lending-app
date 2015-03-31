@@ -46,6 +46,7 @@ public class LoanRepositoryTests {
 		Loan loan = repo.save(new LoanBuilder()
 			.withAmount(BigDecimal.valueOf(100.10))
 			.withTo(LocalDateTime.now().plusDays(14))
+			.withInterest(1.5)
 			.withFrom(LocalDateTime.now())
 		.build());
 		
@@ -76,6 +77,7 @@ public class LoanRepositoryTests {
 					.withAmount(BigDecimal.valueOf(100.10))
 					.withFrom(fromDateTime)
 					.withTo(fromDateTime.plusDays(14))
+					.withInterest(1.5)
 					.build())
 				.build();
 		}).limit(50).forEach(l -> loanAppRepo.save(l));

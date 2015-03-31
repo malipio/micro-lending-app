@@ -5,16 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.malipio.micro.lending.app.domain.Loan;
 
 @RestController
-@RequestMapping("/clients")
-public class ClientController {
+@RequestMapping("/loans")
+public class LoanController {
 
 	@Autowired
 	private ClientRepository clientRepo;
@@ -22,8 +22,8 @@ public class ClientController {
 	@Autowired
 	private LoanRepository loanRepo;
 	
-	@RequestMapping(value="/{pesel}/loans", method=RequestMethod.GET)
-	public ResponseEntity<List<Loan>> getHistoryOfLoans(@PathVariable("pesel") String pesel) {
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<Loan>> getHistoryOfLoans(@RequestParam("pesel") String pesel) {
 		
 		if(pesel == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

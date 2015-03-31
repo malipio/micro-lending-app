@@ -5,6 +5,9 @@ import static org.junit.Assert.assertThat;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
 
@@ -38,19 +41,30 @@ public class AcceptanceTests {
 	@Value("${server.contextPath}")
 	private String contextPath;
 
+	@Value("${app.risk.max.attempts}")
+	private int maxAttempts;
+	
+	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.from}')}")
+	private LocalTime denyFrom;
+	
+	@Value("#{T(java.time.LocalTime).parse('${app.risk.deny.time.to}')}")
+	private LocalTime denyTo;
+	
+	@Value("${app.loan.max.amount}")
+	private BigDecimal loanMaxAmount;
 	
 	private String buildBaseUri() {
 		return "http://localhost:" + this.port+"/"+contextPath;
 	}
 	
-	private String buildLoansApplicationUri(String pesel) {
-		return buildBaseUri()+"/clients/"+pesel+"/loans/applications";
+	private String buildLoansApplicationUri() {
+		return buildBaseUri()+"/loans/applications";
 	}
 	
 	
-	private ResponseEntity<?> postNewLoan(String pesel) {
+	private ResponseEntity<?> postNewLoan(String pesel, double amount) {
 		return new TestRestTemplate().postForEntity(
-				buildLoansApplicationUri(pesel),
+				buildLoansApplicationUri(),
 				new LoanApplicationBuilder()
 						.withClient(
 								new ClientBuilder().withPesel(pesel)
@@ -58,27 +72,45 @@ public class AcceptanceTests {
 										.withLastName("Doe").build())
 						.withLoan(
 								new LoanBuilder()
-										.withAmount(BigDecimal.TEN)
+										.withAmount(BigDecimal.valueOf(amount))
 										.withFrom(LocalDateTime.now())
 										.withTo(LocalDateTime.now().plusMonths(
 												1)).build()).build(),
 				Void.class);
 	}
 	
+	private ResponseEntity<?> postNewLoan(String pesel) {
+		return postNewLoan(pesel, 100.0);
+	}
+	
 	@Test
 	@DirtiesContext
-	public void shouldClientApplyForLoanForNewClientPositiveWithReference() {
-		ResponseEntity<?> entity = postNewLoan("12345678901");
+	public void shouldClientApplyForLoanForNewClientPositive() {
+		ResponseEntity<?> entity = postNewLoan("12345678901", 100.0);
 		assertThat(entity.getStatusCode(), is(HttpStatus.CREATED));
 		assertThat(entity.getHeaders().getLocation(), notNullValue());
 	}
 	
 	@Test
 	@DirtiesContext
-	public void shouldClientApplyForLoanForExistingClientNegativeWithRejection() {
-		postNewLoan("12345678901");
-		postNewLoan("12345678901");
-		postNewLoan("12345678901");
+	public void shouldClientApplyForLoanForNewClientWithMaxAmount() {
+		ResponseEntity<?> entity = postNewLoan("12345678901", loanMaxAmount.doubleValue());
+		LocalTime now = LocalTime.now();
+		if(now.isBefore(denyFrom) || now.isAfter(denyTo)) {
+			assertThat(entity.getStatusCode(), is(HttpStatus.CREATED));
+			assertThat(entity.getHeaders().getLocation(), notNullValue());
+		} else {
+			assertThat(entity.getStatusCode(), is(HttpStatus.FORBIDDEN));
+			assertThat(entity.getHeaders().getLocation(), nullValue());
+		}
+	}
+	
+	@Test
+	@DirtiesContext
+	public void shouldClientApplyForLoanForExistingClientNegativeDueToMaxAttempts() {
+		for(int i = 0; i < maxAttempts; ++i)
+			postNewLoan("1234567890"+i);
+		
 		ResponseEntity<?> entity = postNewLoan("12345678901");
 		assertThat(entity.getStatusCode(), is(HttpStatus.FORBIDDEN));
 		assertThat(entity.getHeaders().getLocation(), nullValue());
@@ -106,7 +138,7 @@ public class AcceptanceTests {
 		postNewLoan("12345678901");
 		postNewLoan("12345678901");
 		
-		ResponseEntity<Loan[]> response = rest.getForEntity(buildBaseUri()+"/clients/{pesel}/loans", Loan[].class, "12345678901");
+		ResponseEntity<Loan[]> response = rest.getForEntity(buildBaseUri()+"/loans?pesel=12345678901", Loan[].class, "12345678901");
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertThat(response.getBody().length, is(2));
 	}
@@ -117,7 +149,7 @@ public class AcceptanceTests {
 		
 		postNewLoan("12345678901");
 		TestRestTemplate rest = new TestRestTemplate();
-		ResponseEntity<Loan[]> response = rest.getForEntity(buildBaseUri()+"/clients/{pesel}/loans", Loan[].class, "123");
+		ResponseEntity<Loan[]> response = rest.getForEntity(buildBaseUri()+"/loans?pesel=123", Loan[].class);
 		assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
 	}
 	
@@ -126,6 +158,6 @@ public class AcceptanceTests {
 	public void shouldNotClientApplyForLoanDueToIncorrectPesel() {
 		
 		ResponseEntity<?> entity = postNewLoan("123");
-		assertThat(entity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR)); // not happy about that
+		assertThat(entity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
 	}
 }
