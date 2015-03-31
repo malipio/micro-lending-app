@@ -1,7 +1,6 @@
 package com.github.malipio.micro.lending.app.domain.validator;
 
 import java.lang.annotation.*;
-import java.math.BigDecimal;
 
 import javax.validation.Constraint;
 
