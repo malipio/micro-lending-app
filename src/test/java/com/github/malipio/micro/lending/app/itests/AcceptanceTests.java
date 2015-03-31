@@ -105,6 +105,13 @@ public class AcceptanceTests {
 	
 	@Test
 	@DirtiesContext
+	public void shouldClientApplyForLoanForNewClientExceedingMaxAmount() {
+		ResponseEntity<?> entity = postNewLoan("12345678901", loanMaxAmount.doubleValue()+10.0);
+		assertThat(entity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+	}
+	
+	@Test
+	@DirtiesContext
 	public void shouldClientApplyForLoanForExistingClientNegativeDueToMaxAttempts() {
 		for(int i = 0; i < maxAttempts; ++i)
 			postNewLoan("1234567890"+i);
