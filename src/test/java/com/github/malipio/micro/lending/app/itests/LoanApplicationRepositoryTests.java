@@ -93,7 +93,7 @@ public class LoanApplicationRepositoryTests {
 		.withCreationDate(now)
 		.withClient(dummyClient())
 		.withSourceIp("127.0.0.2")
-		.build()).limit(50).forEach(e -> repo.save(e));
+		.build()).limit(50).forEach(repo::save);
 		
 		assertThat(repo.count(), is(50L));
 		assertThat(repo.countBySourceIpAndCreationDate("127.0.0.1", 

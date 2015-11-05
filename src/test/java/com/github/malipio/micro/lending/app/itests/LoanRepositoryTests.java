@@ -80,7 +80,7 @@ public class LoanRepositoryTests {
 					.withInterest(1.5)
 					.build())
 				.build();
-		}).limit(50).forEach(l -> loanAppRepo.save(l));
+		}).limit(50).forEach(loanAppRepo::save);
 		
 		List<Loan> loans = repo.findByLoanApplicationClientPeselOrderByToDesc(persistedClient.getPesel());
 		
