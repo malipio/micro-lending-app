@@ -1,14 +1,12 @@
 package com.github.malipio.micro.lending.app.service;
 
-import java.math.BigDecimal;
-import java.time.LocalTime;
-
-import javax.annotation.PostConstruct;
-
+import com.github.malipio.micro.lending.app.domain.LoanApplication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.github.malipio.micro.lending.app.domain.LoanApplication;
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.time.LocalTime;
 
 @Component
 public class TimeWindowGapWithMaxAmountRiskRule implements RiskRule {

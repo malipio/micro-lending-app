@@ -1,25 +1,15 @@
 package com.github.malipio.micro.lending.app.domain;
 
-import java.time.LocalDateTime;
+import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
+import net.karneim.pojobuilder.GeneratePojoBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.groups.Default;
-
-import net.karneim.pojobuilder.GeneratePojoBuilder;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
+import java.time.LocalDateTime;
 
 @Entity
 @GeneratePojoBuilder

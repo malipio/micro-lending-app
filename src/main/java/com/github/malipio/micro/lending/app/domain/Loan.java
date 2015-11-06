@@ -1,23 +1,17 @@
 package com.github.malipio.micro.lending.app.domain;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.groups.Default;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.malipio.micro.lending.app.domain.validator.LoanMaxAmount;
 import com.github.malipio.micro.lending.app.domain.validator.LoanPeriod;
 import com.github.malipio.micro.lending.app.domain.validator.groups.RequestScope;
-
 import net.karneim.pojobuilder.GeneratePojoBuilder;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.groups.Default;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @GeneratePojoBuilder

@@ -1,7 +1,6 @@
 package com.github.malipio.micro.lending.app.service;
 
-import java.util.Optional;
-
+import com.github.malipio.micro.lending.app.domain.Loan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.malipio.micro.lending.app.domain.Loan;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/loans/{loanId}")

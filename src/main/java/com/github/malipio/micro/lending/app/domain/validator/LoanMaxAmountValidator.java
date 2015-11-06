@@ -1,11 +1,10 @@
 package com.github.malipio.micro.lending.app.domain.validator;
 
-import java.math.BigDecimal;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.stereotype.Component;
+import java.math.BigDecimal;
 
 @Component
 public class LoanMaxAmountValidator implements ConstraintValidator<LoanMaxAmount, BigDecimal>{

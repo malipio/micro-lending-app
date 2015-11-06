@@ -1,13 +1,12 @@
 	package com.github.malipio.micro.lending.app.service;
 
-import java.time.Period;
+    import com.github.malipio.micro.lending.app.domain.Loan;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.beans.factory.annotation.Value;
+    import org.springframework.stereotype.Component;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import com.github.malipio.micro.lending.app.domain.Loan;
+    import java.time.Period;
 
 @Component
 public class LoanExtensionService {

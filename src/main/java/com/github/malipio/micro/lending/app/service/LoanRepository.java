@@ -1,10 +1,9 @@
 package com.github.malipio.micro.lending.app.service;
 
-import java.util.List;
-
+import com.github.malipio.micro.lending.app.domain.Loan;
 import org.springframework.data.repository.CrudRepository;
 
-import com.github.malipio.micro.lending.app.domain.Loan;
+import java.util.List;
 
 public interface LoanRepository extends CrudRepository<Loan, Long> {
 

@@ -15,24 +15,16 @@
  */
 package org.springframework.data.jpa.convert.threeten;
 
+import org.springframework.data.convert.Jsr310Converters.*;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-
-import org.springframework.data.convert.Jsr310Converters.DateToInstantConverter;
-import org.springframework.data.convert.Jsr310Converters.DateToLocalDateConverter;
-import org.springframework.data.convert.Jsr310Converters.DateToLocalDateTimeConverter;
-import org.springframework.data.convert.Jsr310Converters.DateToLocalTimeConverter;
-import org.springframework.data.convert.Jsr310Converters.InstantToDateConverter;
-import org.springframework.data.convert.Jsr310Converters.LocalDateTimeToDateConverter;
-import org.springframework.data.convert.Jsr310Converters.LocalDateToDateConverter;
-import org.springframework.data.convert.Jsr310Converters.LocalTimeToDateConverter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 /**
  * JPA 2.1 converters to turn JSR-310 types into legacy {@link Date}s. To activate these converters make sure your

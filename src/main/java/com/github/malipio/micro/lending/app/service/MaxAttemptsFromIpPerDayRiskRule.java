@@ -1,12 +1,11 @@
 package com.github.malipio.micro.lending.app.service;
 
-import java.time.LocalDate;
-
+import com.github.malipio.micro.lending.app.domain.LoanApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.github.malipio.micro.lending.app.domain.LoanApplication;
+import java.time.LocalDate;
 
 @Component
 public class MaxAttemptsFromIpPerDayRiskRule implements RiskRule {

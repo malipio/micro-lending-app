@@ -1,14 +1,13 @@
 package com.github.malipio.micro.lending.app.service;
 
+import com.github.malipio.micro.lending.app.domain.LoanApplicationBuilder;
+import org.junit.Test;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import org.junit.Test;
-
-import com.github.malipio.micro.lending.app.domain.LoanApplicationBuilder;
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 

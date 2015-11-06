@@ -1,15 +1,14 @@
 package com.github.malipio.micro.lending.app.service;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import com.github.malipio.micro.lending.app.domain.Loan;
+import com.github.malipio.micro.lending.app.domain.LoanBuilder;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Period;
 
-import org.junit.Test;
-
-import com.github.malipio.micro.lending.app.domain.Loan;
-import com.github.malipio.micro.lending.app.domain.LoanBuilder;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class LoanExtensionServiceTests {
 

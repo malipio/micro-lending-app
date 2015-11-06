@@ -1,22 +1,17 @@
 package org.springframework.data.convert;
 
-import static java.time.Instant.*;
-import static java.time.LocalDateTime.*;
-import static java.time.ZoneId.*;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.util.ClassUtils;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.util.ClassUtils;
+import static java.time.Instant.ofEpochMilli;
+import static java.time.LocalDateTime.ofInstant;
+import static java.time.ZoneId.systemDefault;
 
 /**
  * Helper class to register JSR-310 specific {@link Converter} implementations in case the we're running on Java 8.

@@ -1,17 +1,16 @@
 package com.github.malipio.micro.lending.app.service;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import com.github.malipio.micro.lending.app.domain.LoanApplicationBuilder;
+import com.github.malipio.micro.lending.app.domain.LoanBuilder;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import org.junit.Test;
-
-import com.github.malipio.micro.lending.app.domain.LoanApplicationBuilder;
-import com.github.malipio.micro.lending.app.domain.LoanBuilder;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class TimeWindowGapWithMaxAmountRiskRuleTests {
 

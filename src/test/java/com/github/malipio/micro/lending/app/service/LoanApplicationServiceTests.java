@@ -1,18 +1,15 @@
 package com.github.malipio.micro.lending.app.service;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
 import com.github.malipio.micro.lending.app.domain.ClientBuilder;
 import com.github.malipio.micro.lending.app.domain.LoanApplication;
-import com.github.malipio.micro.lending.app.domain.LoanBuilder;
 import com.github.malipio.micro.lending.app.domain.LoanApplication.Status;
 import com.github.malipio.micro.lending.app.domain.LoanApplicationBuilder;
+import com.github.malipio.micro.lending.app.domain.LoanBuilder;
+import org.junit.Test;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 public class LoanApplicationServiceTests {

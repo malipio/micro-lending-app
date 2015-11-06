@@ -1,8 +1,6 @@
 package com.github.malipio.micro.lending.app.service;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
+import com.github.malipio.micro.lending.app.domain.LoanApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.malipio.micro.lending.app.domain.LoanApplication;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Component
 public class LoanApplicationService {
