@@ -1,34 +1,28 @@
 package com.github.malipio.micro.lending.app.itests;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
-
-import javax.validation.ConstraintViolationException;
-
+import com.github.malipio.micro.lending.app.MicroLendingApplication;
+import com.github.malipio.micro.lending.app.domain.*;
+import com.github.malipio.micro.lending.app.domain.LoanApplication.Status;
+import com.github.malipio.micro.lending.app.service.ClientRepository;
+import com.github.malipio.micro.lending.app.service.LoanApplicationRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.github.malipio.micro.lending.app.MicroLendingApplication;
-import com.github.malipio.micro.lending.app.domain.Client;
-import com.github.malipio.micro.lending.app.domain.ClientBuilder;
-import com.github.malipio.micro.lending.app.domain.LoanApplication;
-import com.github.malipio.micro.lending.app.domain.LoanBuilder;
-import com.github.malipio.micro.lending.app.domain.LoanApplication.Status;
-import com.github.malipio.micro.lending.app.domain.LoanApplicationBuilder;
-import com.github.malipio.micro.lending.app.service.ClientRepository;
-import com.github.malipio.micro.lending.app.service.LoanApplicationRepository;
+import javax.validation.ConstraintViolationException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MicroLendingApplication.class)
-@DirtiesContext
+@WebIntegrationTest
 public class LoanApplicationRepositoryTests {
 
 	@Autowired
