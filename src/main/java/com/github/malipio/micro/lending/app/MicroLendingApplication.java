@@ -12,7 +12,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 @EntityScan(basePackageClasses = { Client.class , Jsr310JpaConverters.class })
 public class MicroLendingApplication extends SpringBootServletInitializer {
 
-	@Override
+    @Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(MicroLendingApplication.class);
 	}

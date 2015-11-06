@@ -31,10 +31,10 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MicroLendingApplication.class)
-@WebIntegrationTest
+@WebIntegrationTest(randomPort = true)
 public class AcceptanceTests {
 
-	@Value("${server.port}")
+	@Value("${local.server.port}")
 	private int port;
 	
 	@Value("${server.contextPath}")
