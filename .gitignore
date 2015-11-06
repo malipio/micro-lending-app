@@ -2,4 +2,5 @@
 .classpath
 .project
 /.settings/
-/target/
+.idea
+/micro-lending-app.iml
