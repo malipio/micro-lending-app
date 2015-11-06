@@ -3,4 +3,6 @@
 .project
 /.settings/
 .idea
+/.gradle
+/build
 /micro-lending-app.iml
