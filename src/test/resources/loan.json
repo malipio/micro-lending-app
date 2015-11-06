@@ -1,0 +1,12 @@
+{
+  "loan": {
+    "from": "2015-11-06T15:20:08",
+    "to": "2015-12-06T15:20:08",
+    "amount": 100.0
+  },
+  "client": {
+    "pesel": "12345678901",
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+}
