@@ -3,6 +3,8 @@
 **This project implements Micro Lending Application with Spring Boot
 (Data JPA, Web MVC, Jackson, Validation) and PojoBuilder.**
 
+[![Build Status](https://travis-ci.org/malipio/micro-lending-app.svg?branch=master)](https://travis-ci.org/malipio/micro-lending-app)
+
 ## Running
 Run in Tomcat 8 embedded container:
 
@@ -40,4 +42,3 @@ GET http://localhost:8080/micro-lending-app/v1.0.0/loans?pesel={pesel}
 ## Notes
 
 1. Java 8 is required
-  
