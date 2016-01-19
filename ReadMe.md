@@ -4,6 +4,7 @@
 (Data JPA, Web MVC, Jackson, Validation) and PojoBuilder.**
 
 [![Build Status](https://travis-ci.org/malipio/micro-lending-app.svg?branch=master)](https://travis-ci.org/malipio/micro-lending-app)
+[![codecov.io](https://codecov.io/github/malipio/micro-lending-app/coverage.svg?branch=master)](https://codecov.io/github/malipio/micro-lending-app?branch=master)
 
 ## Running
 Run in Tomcat 8 embedded container:
